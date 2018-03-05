@@ -2,3 +2,8 @@
 database
 **.swp
 doc_generator
+
+*.DS_Store
+.DS_Store
+
+.idea/
