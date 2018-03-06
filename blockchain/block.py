@@ -135,6 +135,9 @@ class Block(ABC, persistent.Persistent):
         # (checks that apply only to non-genesis blocks)
             # Check that parent exists (you may find chain.blocks helpful) [test_nonexistent_parent]
             # On failure: return False, "Nonexistent parent"
+        if not self.is_genesis:
+            if not (self.parent_hash in chain.blocks):
+                return (False, "Nonexistent parent")
 
             # Check that height is correct w.r.t. parent height [test_bad_height]
             # On failure: return False, "Invalid height"
