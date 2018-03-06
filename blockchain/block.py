@@ -117,6 +117,8 @@ class Block(ABC, persistent.Persistent):
 
         # Check that block.hash is correctly calculated [test_rejects_invalid_hash]
         # On failure: return False, "Hash failed to match"
+        if not self.hash == self.calculate_hash():
+            return (False, "Hash failed to match")
 
         # Check that there are at most 900 transactions in the block [test_rejects_too_many_txs]
         # On failure: return False, "Too many transactions"
