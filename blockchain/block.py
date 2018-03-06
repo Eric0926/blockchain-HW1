@@ -172,6 +172,7 @@ class Block(ABC, persistent.Persistent):
                         return (False, "Double transaction inclusion")
 
                 # for every input ref in the tx
+                receiver = None
                 for input_ref in tx.input_refs:
                     # (you may find the string split method for parsing the input into its components)
                     (tx_id, input_loc) = input_ref.split(":")
@@ -187,6 +188,16 @@ class Block(ABC, persistent.Persistent):
 
                     # every input was sent to the same user (would normally carry a signature from this user; we leave this out for simplicity) [test_user_consistency]
                     # On failure: return False, "User inconsistencies"
+                    input_tx = chain.all_transactions.get(tx_id).outputs[input_loc]
+                    if receiver == None:
+                        receiver = input_tx.receiver
+                    elif receiver != input_tx.receiver:
+                        return (False, "User inconsistencies")
+
+                    # Check that there is no wrong users
+                    for tx2 in tx.outputs:
+                        if tx2.sender != receiver:
+                            return (False, "User inconsistencies")
 
                     # no input_ref has been spent in a previous block on this chain [test_doublespent_input_same_chain]
                     # (or in this block; you will have to check this manually) [test_doublespent_input_same_block]
