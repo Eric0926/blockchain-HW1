@@ -112,6 +112,8 @@ class Block(ABC, persistent.Persistent):
         # (checks that apply to all blocks)
         # Check that Merkle root calculation is consistent with transactions in block (use the calculate_merkle_root function) [test_rejects_invalid_merkle]
         # On failure: return False, "Merkle root failed to match"
+        if not self.merkle == self.calculate_merkle_root():
+            return (False, "Merkle root failed to match")
 
         # Check that block.hash is correctly calculated [test_rejects_invalid_hash]
         # On failure: return False, "Hash failed to match"
