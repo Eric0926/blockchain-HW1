@@ -126,16 +126,16 @@ class Block(ABC, persistent.Persistent):
             return (False, "Too many transactions")
 
         # (checks that apply to genesis block)
+        if self.is_genesis:
             # Check that height is 0 and parent_hash is "genesis" [test_invalid_genesis]
             # On failure: return False, "Invalid genesis"
-        if self.is_genesis:
             if self.height != 0 or self.parent_hash != "genesis":
                 return (False, "Invalid genesis")
 
         # (checks that apply only to non-genesis blocks)
+        if not self.is_genesis:
             # Check that parent exists (you may find chain.blocks helpful) [test_nonexistent_parent]
             # On failure: return False, "Nonexistent parent"
-        if not self.is_genesis:
             if not (self.parent_hash in chain.blocks):
                 return (False, "Nonexistent parent")
 
