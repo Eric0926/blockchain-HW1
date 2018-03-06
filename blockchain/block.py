@@ -147,6 +147,8 @@ class Block(ABC, persistent.Persistent):
 
             # Check that timestamp is non-decreasing [test_bad_timestamp]
             # On failure: return False, "Invalid timestamp"
+            if self.timestamp < parent.timestamp:
+                return (False, "Invalid timestamp")
 
             # Check that seal is correctly computed and satisfies "target" requirements; use the provided is_valid_seal method [test_bad_seal]
             # On failure: return False, "Invalid seal"
