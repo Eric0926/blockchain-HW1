@@ -167,6 +167,9 @@ class Block(ABC, persistent.Persistent):
                 # (you may find chain.get_chain_ending_with and chain.blocks_containing_tx and util.nonempty_intersection useful)
                 if self.transactions.count(tx) > 1:
                     return (False, "Double transaction inclusion")
+                for block2 in chain.get_chain_ending_with(self.parent_hash):
+                    if nonempty_intersection(self.transactions, chain.blocks.get(block2).transactions):
+                        return (False, "Double transaction inclusion")
 
                 # for every input ref in the tx
                     # (you may find the string split method for parsing the input into its components)
