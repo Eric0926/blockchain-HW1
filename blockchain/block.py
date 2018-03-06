@@ -165,6 +165,8 @@ class Block(ABC, persistent.Persistent):
                 # the transaction has not already been included on a block on the same blockchain as this block [test_double_tx_inclusion_same_chain]
                 # (or twice in this block; you will have to check this manually) [test_double_tx_inclusion_same_block]
                 # (you may find chain.get_chain_ending_with and chain.blocks_containing_tx and util.nonempty_intersection useful)
+                if self.transactions.count(tx) > 1:
+                    return (False, "Double transaction inclusion")
 
                 # for every input ref in the tx
                     # (you may find the string split method for parsing the input into its components)
