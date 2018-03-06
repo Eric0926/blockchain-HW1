@@ -26,8 +26,12 @@ class PoWBlock(Block):
         """
 
         # Placeholder for (1a)
-        return 1
-
+        res = 2**256
+        if self.target == 0:
+            return res
+        else:
+            aux = '{0:f}'.format(res / self.target)
+            return int(aux[:aux.index('.')])
     def mine(self):
         """ PoW mining loop; attempts to seal a block with new seal data until the seal is valid
             (performing brute-force mining).  Terminates once block is valid.
