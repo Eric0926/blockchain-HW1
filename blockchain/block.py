@@ -152,6 +152,8 @@ class Block(ABC, persistent.Persistent):
 
             # Check that seal is correctly computed and satisfies "target" requirements; use the provided is_valid_seal method [test_bad_seal]
             # On failure: return False, "Invalid seal"
+            if not self.seal_is_valid():
+                return (False, "Invalid seal")
 
             # Check that all transactions within are valid (use tx.is_valid) [test_malformed_txs]
             # On failure: return False, "Malformed transaction included"
