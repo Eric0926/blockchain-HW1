@@ -141,6 +141,9 @@ class Block(ABC, persistent.Persistent):
 
             # Check that height is correct w.r.t. parent height [test_bad_height]
             # On failure: return False, "Invalid height"
+            parent = chain.blocks.get(self.parent_hash)
+            if self.height != parent.height + 1:
+                return (False, "Invalid height")
 
             # Check that timestamp is non-decreasing [test_bad_timestamp]
             # On failure: return False, "Invalid timestamp"
