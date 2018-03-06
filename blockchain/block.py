@@ -172,11 +172,18 @@ class Block(ABC, persistent.Persistent):
                         return (False, "Double transaction inclusion")
 
                 # for every input ref in the tx
+                for input_ref in tx.input_refs:
                     # (you may find the string split method for parsing the input into its components)
+                    (tx_id, input_loc) = input_ref.split(":")
 
                     # each input_ref is valid (aka corresponding transaction can be looked up in its holding transaction) [test_failed_input_lookup]
                     # (you may find chain.all_transactions useful here)
                     # On failure: return False, "Required output not found"
+                    input_loc = int(input_loc)
+                    if len(chain.all_transactions) < input_loc:
+                        return (False, "Required output not found")
+                    if tx_id not in chain.all_transactions:
+                        return (False, "Required output not found")
 
                     # every input was sent to the same user (would normally carry a signature from this user; we leave this out for simplicity) [test_user_consistency]
                     # On failure: return False, "User inconsistencies"
