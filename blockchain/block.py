@@ -122,6 +122,8 @@ class Block(ABC, persistent.Persistent):
 
         # Check that there are at most 900 transactions in the block [test_rejects_too_many_txs]
         # On failure: return False, "Too many transactions"
+        if len(self.transactions) > 900:
+            return (False, "Too many transactions")
 
         # (checks that apply to genesis block)
             # Check that height is 0 and parent_hash is "genesis" [test_invalid_genesis]
