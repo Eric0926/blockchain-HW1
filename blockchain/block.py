@@ -173,7 +173,7 @@ class Block(ABC, persistent.Persistent):
 
                 # for every input ref in the tx
                 receiver = None
-                for input_ref in tx.input_refs:
+                for index, input_ref in enumerate(tx.input_refs):
                     # (you may find the string split method for parsing the input into its components)
                     (tx_id, input_loc) = input_ref.split(":")
 
@@ -203,6 +203,13 @@ class Block(ABC, persistent.Persistent):
                     # (or in this block; you will have to check this manually) [test_doublespent_input_same_block]
                     # (you may find nonempty_intersection and chain.blocks_spending_input helpful here)
                     # On failure: return False, "Double-spent input"
+                    block_aux = chain.blocks.get(self.parent_hash)
+                    while not block_aux.is_genesis:
+                        for tx2 in block_aux.transactions:
+                            if input_ref in tx2.input_refs:
+                                return (False, "Double-spent input")
+                        block_aux = chain.blocks.get(block_aux.parent_hash)
+
 
                     # each input_ref points to a transaction on the same blockchain as this block [test_input_txs_on_chain]
                     # (or in this block; you will have to check this manually) [test_input_txs_in_block]
