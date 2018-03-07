@@ -210,6 +210,13 @@ class Block(ABC, persistent.Persistent):
                                 return (False, "Double-spent input")
                         block_aux = chain.blocks.get(block_aux.parent_hash)
 
+                    count = 0
+                    for tx2 in self.transactions:
+                        for ir in tx2.input_refs:
+                            if input_ref == ir:
+                                count+=1
+                            if count>1:
+                                return (False, "Double-spent input")
 
                     # each input_ref points to a transaction on the same blockchain as this block [test_input_txs_on_chain]
                     # (or in this block; you will have to check this manually) [test_input_txs_in_block]
