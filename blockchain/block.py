@@ -242,9 +242,13 @@ class Block(ABC, persistent.Persistent):
                         return (False, "Input transaction not found")
 
                 # for every output in the tx
+                sender = tx.outputs[0].sender
+                for output in tx.outputs:
                     # every output was sent from the same user (would normally carry a signature from this user; we leave this out for simplicity)
                     # (this MUST be the same user as the outputs are locked to above) [test_user_consistency]
                     # On failure: return False, "User inconsistencies"
+                    if output.sender != sender:
+                        return (False, "User inconsistencies")
                 # the sum of the input values is at least the sum of the output values (no money created out of thin air) [test_no_money_creation]
                 # On failure: return False, "Creating money"
 
