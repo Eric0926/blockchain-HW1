@@ -233,6 +233,11 @@ class Block(ABC, persistent.Persistent):
                             break
                         block_aux = chain.blocks.get(block_aux.parent_hash)
 
+                    for tx2 in self.transactions:
+                        if tx_id == tx2.hash:
+                            input_found = True
+                            break
+
                     if not input_found:
                         return (False, "Input transaction not found")
 
