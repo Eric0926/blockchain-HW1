@@ -222,6 +222,19 @@ class Block(ABC, persistent.Persistent):
                     # (or in this block; you will have to check this manually) [test_input_txs_in_block]
                     # (you may find chain.blocks_containing_tx.get and nonempty_intersection as above helpful)
                     # On failure: return False, "Input transaction not found"
+                    block_aux = chain.blocks.get(self.parent_hash)
+                    input_found = False
+                    while True:
+                        for tx2 in block_aux.transactions:
+                            if tx_id == tx2.hash:
+                                input_found = True
+                                break
+                        if block_aux.is_genesis:
+                            break
+                        block_aux = chain.blocks.get(block_aux.parent_hash)
+
+                    if not input_found:
+                        return (False, "Input transaction not found")
 
                 # for every output in the tx
                     # every output was sent from the same user (would normally carry a signature from this user; we leave this out for simplicity)
