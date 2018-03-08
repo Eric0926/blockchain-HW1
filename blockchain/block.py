@@ -157,6 +157,7 @@ class Block(ABC, persistent.Persistent):
 
             # Check that all transactions within are valid (use tx.is_valid) [test_malformed_txs]
             # On failure: return False, "Malformed transaction included"
+            total_input_amount = 0
             for tx in self.transactions:
                 if not tx.is_valid():
                     return (False, "Malformed transaction included")
@@ -199,6 +200,7 @@ class Block(ABC, persistent.Persistent):
                         if tx2.sender != receiver:
                             return (False, "User inconsistencies")
 
+                    total_input_amount+= input_tx.amount
                     # no input_ref has been spent in a previous block on this chain [test_doublespent_input_same_chain]
                     # (or in this block; you will have to check this manually) [test_doublespent_input_same_block]
                     # (you may find nonempty_intersection and chain.blocks_spending_input helpful here)
@@ -243,14 +245,18 @@ class Block(ABC, persistent.Persistent):
 
                 # for every output in the tx
                 sender = tx.outputs[0].sender
+                total_output_amount = 0
                 for output in tx.outputs:
                     # every output was sent from the same user (would normally carry a signature from this user; we leave this out for simplicity)
                     # (this MUST be the same user as the outputs are locked to above) [test_user_consistency]
                     # On failure: return False, "User inconsistencies"
+                    total_output_amount+= output.amount
                     if output.sender != sender:
                         return (False, "User inconsistencies")
                 # the sum of the input values is at least the sum of the output values (no money created out of thin air) [test_no_money_creation]
                 # On failure: return False, "Creating money"
+                if total_output_amount > total_input_amount:
+                    return (False, "Creating money")
 
         return True, "All checks passed"
 
