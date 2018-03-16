@@ -50,7 +50,10 @@ while curr_height <= HEIGHT_TO_REACH:
     for parent_candidate in eligible_parents:
         eligible_txs += [tx.hash for tx in parent_candidate.transactions]
 
-    for i in range(int(random.random() * MAX_TXS_PER_BLOCK)):
+    num_txs = int(random.random() * MAX_TXS_PER_BLOCK)
+    if curr_height < 10:
+        num_txs += 5 # seed early blocks with lots of txs to prevent duplicate hashes
+    for i in range(num_txs):
         # choose a random sender and receiver
         sender = random.choice(USERS)
         receiver = random.choice(USERS)
@@ -78,7 +81,10 @@ while curr_height <= HEIGHT_TO_REACH:
 
     block = PoWBlock(curr_height, txs, parent.hash)
     block.mine()
-    assert(chain.add_block(block))
+    out_status = chain.add_block(block)
+    if not out_status:
+        # block add failed; try again
+        continue
     print("Added block at height", curr_height)
     curr_height += 1
     parent = block

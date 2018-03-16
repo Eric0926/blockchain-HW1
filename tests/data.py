@@ -9,9 +9,9 @@ class DataTest(unittest.TestCase):
 
     def test_profitability(self):
         hashrate_per_miner = 14000000000000
-        self.check_approx_equality(calculate_profit(float(1590896927258), hashrate_per_miner, 5, 10000, 33.0, 2.0), 3505)
+        self.check_approx_equality(calculate_profit(float(1590896927258), hashrate_per_miner, 5, 10000, 33.0, 2.0), 17525)
         self.check_approx_equality(calculate_profit(float(1590896927258), hashrate_per_miner, 1, 9000, 12.5, 1.0), 597)
-        self.check_approx_equality(calculate_profit(float(1590896927258), 3 * hashrate_per_miner, 5, 9000, 12.5, 1.5), 2688)
+        self.check_approx_equality(calculate_profit(float(1590896927258), 3 * hashrate_per_miner, 5, 9000, 12.5, 1.5), 13442)
         self.check_approx_equality(calculate_profit(float(1590896927258), hashrate_per_miner, 1, 50000, 12.5, 1.0), 3319)
         self.check_approx_equality(calculate_profit(float(1590896927258), hashrate_per_miner, 1, 9000, 0.0, 1.0), 0)
         self.check_approx_equality(calculate_profit(float(1590896927258), hashrate_per_miner, 3, 9000, 10.0, 0.0), 0)

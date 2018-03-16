@@ -193,6 +193,9 @@ class ValidityTest(unittest.TestCase):
         tx1 = Transaction([], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Alice", 1)])
         tx2 = Transaction([tx1.hash + ":2"], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Carol", 1)]) # good tx id, bad input location
         tx3 = Transaction(["fakehash" + ":2"], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Carol", 1)]) # bad tx id
+        # good txs
+        tx4 = Transaction([tx1.hash + ":1"], [TransactionOutput("Alice", "Bob", .2), TransactionOutput("Alice", "Carol", .2)])
+        tx5 = Transaction([tx4.hash + ":0"], [TransactionOutput("Bob", "Bob", 0)])
 
         block = TestBlock(0, [tx1], "genesis", is_genesis=True)
         self.assertTrue(block.is_valid()[0])
@@ -203,6 +206,10 @@ class ValidityTest(unittest.TestCase):
 
         block2 = TestBlock(1, [tx3], block.hash)
         self.assertEqual(block2.is_valid(), (False, "Required output not found"))
+
+        block2 = TestBlock(1, [tx4, tx5], block.hash) # tx exists, but is in same block; this should work
+        self.assertTrue(block2.is_valid()[0])
+        self.assertTrue(self.test_chain.add_block(block2))
 
     def test_user_consistency(self):
         tx1 = Transaction([], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Alice", 1)])
@@ -265,7 +272,7 @@ class ValidityTest(unittest.TestCase):
     def test_input_txs_on_chain(self):
         tx1 = Transaction([], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Alice", 1)])
 
-        # next two transactions spend same input twice (double spend)
+        # create chain of transactions; tx2 spends tx1, tx3 spends tx2
         tx2 = Transaction([tx1.hash + ":1"], [TransactionOutput("Alice", "Bob", .9), TransactionOutput("Alice", "Carol", 0)])
         tx3 = Transaction([tx2.hash + ":0"], [TransactionOutput("Bob", "Bob", .8)])
 
@@ -287,7 +294,7 @@ class ValidityTest(unittest.TestCase):
     def test_input_txs_in_block(self):
         tx1 = Transaction([], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Alice", 1)])
 
-        # next two transactions spend same input twice (double spend)
+        # create chain of transactions; tx2 spends tx1, tx3 spends tx2
         tx2 = Transaction([tx1.hash + ":1"], [TransactionOutput("Alice", "Bob", .9), TransactionOutput("Alice", "Carol", 0)])
         tx3 = Transaction([tx2.hash + ":0"], [TransactionOutput("Bob", "Bob", .8)])
 

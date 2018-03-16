@@ -182,14 +182,21 @@ class Block(ABC, persistent.Persistent):
                     # (you may find chain.all_transactions useful here)
                     # On failure: return False, "Required output not found"
                     input_loc = int(input_loc)
-                    if len(chain.all_transactions) < input_loc:
+                    found = False
+                    input_tx = None
+                    for tx2 in self.transactions:
+                        if tx_id == tx2.hash:
+                            found = True
+                            input_tx = tx2.outputs[input_loc]
+                    if len(chain.all_transactions) < input_loc and not found:
                         return (False, "Required output not found")
-                    if tx_id not in chain.all_transactions:
+                    if tx_id not in chain.all_transactions and not found:
                         return (False, "Required output not found")
 
                     # every input was sent to the same user (would normally carry a signature from this user; we leave this out for simplicity) [test_user_consistency]
                     # On failure: return False, "User inconsistencies"
-                    input_tx = chain.all_transactions.get(tx_id).outputs[input_loc]
+                    if not input_tx:
+                        input_tx = chain.all_transactions.get(tx_id).outputs[input_loc]
                     if receiver == None:
                         receiver = input_tx.receiver
                     elif receiver != input_tx.receiver:

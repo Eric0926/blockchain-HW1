@@ -4,10 +4,11 @@ from blockchain.pow_block import PoWBlock
 from blockchain.transaction import Transaction, TransactionOutput
 
 class TestBlock(PoWBlock):
-    """ We are testing blockhashing; make sure timestamp is consistent. """
+    """ We are testing blockhashing; make sure timestamp and Merkle Hash is consistent. """
 
-    def set_dummy_timestamp(self):
+    def set_dummy_vals(self):
         self.timestamp = ""
+        self.merkle = "whee"
 
 class HashTest(unittest.TestCase):
 
@@ -21,8 +22,8 @@ class HashTest(unittest.TestCase):
         tx1 = Transaction([], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Alice", 1)])
         tx2 = Transaction([tx1.hash + ":0"], [TransactionOutput("Alice", "Bob", 1), TransactionOutput("Alice", "Carol", 1)])
         block = TestBlock(0, [tx1,tx2], "genesis", is_genesis=True)
-        block.set_dummy_timestamp()
-        self.assertEqual(sha256_2_string(block.header()), "9fc4ae4f2e6a68a0e79a57c4491b03a72f9a4bcdbc6ab7213e0f9334d800c57d")
+        block.set_dummy_vals()
+        self.assertEqual(sha256_2_string(block.header()), "b0d35a2ffb46c6a8f48658d77f990656f7a9ec753b77342eb3b0e6a1d7acf934")
 
 if __name__ == '__main__':
     unittest.main()

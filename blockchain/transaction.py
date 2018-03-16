@@ -22,12 +22,12 @@ class TransactionOutput(persistent.Persistent):
 class Transaction(persistent.Persistent):
 
     def __init__(self, input_refs, outputs):
-        """ Class representing a transaction output in the UTXO model.
+        """ Class representing a transaction in the UTXO model.
+        Each transaction consumes (spends) a list of inputs, and creates a list of outputs.
 
         Args:
-            sender (str): Account sending (creating) the output.
-            receiver (str): Account receiving (and later potentially spending) the output.
-            amount (int): Amount being transferred.
+            input_refs (:obj:`list` of str): References to every input in the form [tx_hash:list_index_of_output], 0-indexed.
+            outputs (:obj:`list` of :obj:`TransactionOutput`): Outputs created by the transaction. An output's index is its position in this list.
         """
         self.input_refs = input_refs
         self.outputs = outputs

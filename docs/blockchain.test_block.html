@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>blockchain.test_block module &mdash; Cornell Chain 0.1 documentation</title>
+  <title>blockchain.test_block module &mdash; CornellChain 2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Cornell Chain 0.1 documentation" href="index.html"/>
+    <link rel="top" title="CornellChain 2 documentation" href="index.html"/>
         <link rel="up" title="blockchain package" href="blockchain.html"/>
         <link rel="next" title="blockchain.transaction module" href="blockchain.transaction.html"/>
         <link rel="prev" title="blockchain.pow_block module" href="blockchain.pow_block.html"/> 
@@ -57,7 +57,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Cornell Chain
+            <a href="index.html" class="icon icon-home"> CornellChain
           
 
           
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1
+                2
               </div>
             
           
@@ -119,7 +119,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Cornell Chain</a>
+          <a href="index.html">CornellChain</a>
         
       </nav>
 
@@ -178,75 +178,6 @@
 <dd><p>Bases: <a class="reference internal" href="blockchain.pow_block.html#blockchain.pow_block.PoWBlock" title="blockchain.pow_block.PoWBlock"><code class="xref py py-class docutils literal"><span class="pre">blockchain.pow_block.PoWBlock</span></code></a></p>
 <p>A test block is just a PoW block that is always valid;
 use if you need to to test e.g. block validity features.</p>
-<p>Creates a block template (unsealed).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>height</strong> (<em>int</em>) – height of the block in the chain (# of blocks between block and genesis).</li>
-<li><strong>transactions</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">Transaction</span></code>) – ordered list of transactions in the block.</li>
-<li><strong>parent_hash</strong> (<em>str</em>) – the hash of the parent block in the blockchain.</li>
-<li><strong>is_genesis</strong> (<em>bool</em><em>, </em><em>optional</em>) – True only if the block is a genesis block.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.parent_hash">
-<code class="descname">parent_hash</code><a class="headerlink" href="#blockchain.test_block.TestBlock.parent_hash" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> – the hash of the parent block in blockchain.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.height">
-<code class="descname">height</code><a class="headerlink" href="#blockchain.test_block.TestBlock.height" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – height of the block in the chain (# of blocks between block and genesis).</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.transactions">
-<code class="descname">transactions</code><a class="headerlink" href="#blockchain.test_block.TestBlock.transactions" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">Transaction</span></code> – ordered list of transactions in the block.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.timestamp">
-<code class="descname">timestamp</code><a class="headerlink" href="#blockchain.test_block.TestBlock.timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Unix timestamp of the block</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.target">
-<code class="descname">target</code><a class="headerlink" href="#blockchain.test_block.TestBlock.target" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Target value for the block’s seal to be valid (different for each seal mechanism)</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.is_genesis">
-<code class="descname">is_genesis</code><a class="headerlink" href="#blockchain.test_block.TestBlock.is_genesis" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> – True only if the block is a genesis block (first block in the chain).</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.merkle">
-<code class="descname">merkle</code><a class="headerlink" href="#blockchain.test_block.TestBlock.merkle" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> – Merkle hash of the list of transactions in a block, uniquely identifying the list.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.seal">
-<code class="descname">seal</code><a class="headerlink" href="#blockchain.test_block.TestBlock.seal" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Seal data for block (in PoW this is the nonce satisfying the PoW puzzle; in PoA, the signature of the authority”</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="blockchain.test_block.TestBlock.hash">
-<code class="descname">hash</code><a class="headerlink" href="#blockchain.test_block.TestBlock.hash" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> – Hex-encoded SHA256^2 hash of the block header (self.header())</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="blockchain.test_block.TestBlock.is_valid">
 <code class="descname">is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blockchain.test_block.TestBlock.is_valid" title="Permalink to this definition">¶</a></dt>
@@ -278,7 +209,7 @@ use if you need to to test e.g. block validity features.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CS5433 Staff.
+        &copy; Copyright 2018, CS5433 Course Staff, Cornell Tech.
 
     </p>
   </div>
@@ -300,7 +231,7 @@ use if you need to to test e.g. block validity features.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1',
+            VERSION:'2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
