@@ -49,10 +49,10 @@ class PoABlock(Block):
         # make sure to check that output is valid seal with provided code
 
         # Placeholder for (2)
-        sk = SigningKey.from_string(self.get_private_key(), curve=ecdsa.NIST192p)
-        sig = int.from_bytes(sk.sign(self.unsealed_header().encode("utf-8")), byteorder='big')
-        self.set_seal_data(sig)
-
+        while(not self.seal_is_valid()):
+            sk = SigningKey.from_string(self.get_private_key(), curve=ecdsa.NIST192p)
+            sig = int.from_bytes(sk.sign(self.unsealed_header().encode("utf-8")), byteorder='big')
+            self.set_seal_data(sig)
         return
 
 
