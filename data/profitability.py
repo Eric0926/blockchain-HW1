@@ -16,7 +16,9 @@ def calculate_profit(average_difficulty, hashrate_per_miner, num_miners, btc_usd
     """
 
     # Placeholder for (4)
-    return 50
+    if int(average_difficulty) is not 0:
+        return (hashrate_per_miner*num_miners*btc_usd_price*btc_per_block*months_to_mine*30*86400)/(2**32*average_difficulty)
+    return 0
 
 
 if __name__ == "__main__":
