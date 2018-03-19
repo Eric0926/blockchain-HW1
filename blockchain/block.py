@@ -39,19 +39,49 @@ class Block(ABC, persistent.Persistent):
 
     def calculate_merkle_root(self):
         """ Gets the Merkle root hash for a given list of transactions.
-
         This method is incomplete!  Right now, it only hashes the
         transactions together, which does not enable the same type
         of lite client support a true Merkle hash would.
         You do not need to complete this except for the bonus question.
-
         Returns:
             str: Merkle hash of the list of transactions in a block, uniquely identifying the list.
+
+                                    ROOT
+                                    /  \
+                                 /        \
+                              /              \
+                           /                    \
+                       z1                            z2
+                     /  \                           / \
+                   /      \                       /     \
+                /            \                /            \
+              y1              y2             y3             y3
+             /  \            /  \           / \
+           /      \        /      \       /     \
+          x1      x2      x3      x4     x5    x5
+         / \     / \     / \     / \     / \
+        a   b   c   d   e   f   g   h   i   i
         """
 
-        # Placeholder for (BONUS)
-        all_txs_as_string = "".join([str(x) for x in self.transactions])
-        return sha256_2_string(all_txs_as_string)
+        merkle_tree = [str(x) for x in self.transactions] # [a,b,...,g,h,i]
+        merkle_tree = self.hash_each_transaction(merkle_tree) ## Should I hash it at first?
+
+        while(len(merkle_tree) != 1):
+            merkle_tree = self.correct_num_of_leaves(merkle_tree)
+            merkle_tree = self.hash_pair_of_nodes(merkle_tree)
+
+        return merkle_tree[0]
+
+    def hash_pair_of_nodes(l):
+        hashed = []
+        for i in range(0, l, 2):
+            hashed.append(sha256_2_string(l[i]+l[i+1]))
+        return hashed
+
+    def correct_num_of_leaves(odd_list):
+        if (len(odd_list)%2==1):
+            odd_list.append(odd_list[-1])
+        return odd_list  ## now is even_list
 
     def unsealed_header(self):
         """ Computes the header string of a block (the component that is sealed by mining).
